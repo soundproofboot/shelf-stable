@@ -5,10 +5,13 @@ const { signToken } = require('../utils/auth');
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
+
+      console.log('this is the user from context',  context.user)
       if (context.user) {
-        const userData = await User.findOne({ id: context.user._id})
+        const userData = await User.findOne({ _id: context.user._id})
           .select('-__v -password');
 
+          console.log('this is the user data returned', userData)
           return userData;
       }
 
@@ -41,15 +44,14 @@ const resolvers = {
       return { token, user };
     },
     // saveBook
-    saveBook: async(parent, args, context) => {
+    saveBook: async(parent, bookData, context) => {
       if (context.user) {
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { savedBooks: args } },
+          { $addToSet: { savedBooks: bookData } },
           { new: true, runValidators: true }
         );
 
-        console.log(updatedUser);
         return updatedUser;
       }
 
@@ -57,6 +59,8 @@ const resolvers = {
     },
     // removeBook
     removeBook: async(parent, args, context) => {
+      console.log(args);
+      console.log(context.user);
       if (context.user) {
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
@@ -64,6 +68,7 @@ const resolvers = {
           { new: true }
         );
 
+        console.log(updatedUser);
         return updatedUser;
       }
 
