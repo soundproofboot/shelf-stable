@@ -5,6 +5,10 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/googlebooks', {
   useUnifiedTopology: true,
   // useCreateIndex: true,
   // useFindAndModify: false,
-});
+},
+//  () => {
+//   mongoose.connection.db.dropDatabase();
+// }
+);
 
 module.exports = mongoose.connection;

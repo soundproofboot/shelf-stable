@@ -7,12 +7,14 @@ import { GET_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
 
 import Auth from '../utils/auth';
-import { getSavedBookIds, removeBookId } from '../utils/localStorage';
+import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   const { loading, data } = useQuery(GET_ME);
 
   const userData = data?.me || {};
+
+  if (userData) console.log(userData);
   
   const [removeBook, { error }] = useMutation(REMOVE_BOOK, {
     refetchQueries: [
